@@ -5,10 +5,8 @@ export function TodoList() {
     return store.todo
   })
 
-
   console.log(todos);
   
-
   return (
     <ul>
       {todos.map(todo => <li key={todo}>{todo}</li>)}

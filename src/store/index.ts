@@ -14,7 +14,9 @@ const todoSlice = createSlice({
 
   // vai adicionar quais ações a interface pode fazer no nosso estado
   reducers: {
-    add: () => {}
+    add: (state, action) => {
+      console.log(state, action);
+    }
   }
 })
 
@@ -23,3 +25,5 @@ export const store = configureStore({
     todo: todoSlice.reducer
   }
 })
+
+export const { add } = todoSlice.actions
