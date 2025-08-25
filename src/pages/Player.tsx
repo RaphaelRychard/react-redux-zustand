@@ -2,21 +2,28 @@ import { MessageCircle } from "lucide-react";
 import { Header } from "../components/Header";
 import { Video } from "../components/Video";
 import { Module } from "../components/Module";
-import { useAppSelector } from "../store";
-import { useCurrentLesson } from "../store/slices/player";
+
+import { useCurrentLesson, useStore } from "../zustand-store";
+
 import { useEffect } from "react";
 
-
 export function Player() {
-  const modules = useAppSelector(state => {
-    return state.player.course.modules
-  })
-  
+  const { course, load } = useStore()
+
   const { currentLesson } = useCurrentLesson()
 
   useEffect(() => {
-    document.title = `Assistindo: ${currentLesson.title}`
+    load()
+  }, [])
+
+  console.log(course);
+
+  useEffect(() => {
+    if (currentLesson) {
+      document.title = `Assistindo: ${currentLesson.title}`
+    }
   }, [currentLesson])
+  
 
   return (
     <div className="h-screen bg-zinc-950 text-zinc-50 flex justify-center items-center">
@@ -29,7 +36,7 @@ export function Player() {
             <MessageCircle className="size-4" />
             Deixar feedback
           </button>
-          
+
         </div>
 
         <main className="relative pr-80 flex overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 shadow">
@@ -38,13 +45,13 @@ export function Player() {
           </div>
 
           <aside className="w-80 absolute divide-y-2 divide-zinc-900 top-0 bottom-0 right-0 border-l border-zinc-800 bg-zinc-900 overflow-y-scroll scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-gray-800">
-            {modules.map((module, index) => {
+            {course?.modules && course?.modules.map((module, index) => {
               return (
-                <Module 
+                <Module
                   key={module.id}
-                  moduleIndex={index} 
+                  moduleIndex={index}
                   title={module.title}
-                  amountOfLessons={module.lessons.length} 
+                  amountOfLessons={module.lessons.length}
                 />
               )
             })}
